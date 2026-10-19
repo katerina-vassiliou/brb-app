@@ -1,11 +1,77 @@
-# Leave Booking System
+# Brb. Leave Booking System
 
-A leave booking application built as a React + TypeScript frontend on top of an
-Express + TypeORM backend.
+![Booking time off as an employee, then approving it as a manager](docs/media/demo.gif)
 
-- **Frontend** - Vite, React 19, TypeScript (strict), Tailwind CSS v4, React
-  Router 7, Vitest + React Testing Library, Cypress.
-- **Backend** - Express 5, TypeORM, MySQL, JWT auth, Jest.
+A full-stack leave booking system, built as university coursework. It is not a
+product and isn't being developed any further, but I've kept it public as a
+record of the work.
+
+## The brief
+
+Build a leave booking system with a React front end and a back end of our own,
+using React Router and Tailwind CSS, meeting WCAG accessibility guidelines and
+working in an agile way.
+
+## What it does
+
+There are three roles, and each sees a different app.
+
+- **Employees** see their remaining allowance, book time off from a dialog that
+  shows how many days it uses and what will be left, and follow their requests
+  in a searchable, filterable table. They can cancel a request while it is
+  pending.
+- **Managers** get a queue of pending requests from their direct reports to
+  approve or decline, a team summary on the dashboard and a team calendar. They
+  can book leave too.
+- **Admins** see an organisation-wide summary, can approve any request, book on
+  someone's behalf, add, edit and delete people, manage departments and job
+  roles, and set public holidays from the team calendar.
+
+Everyone can see their own profile and allowance, and change their password,
+from Settings.
+
+## How it meets the brief
+
+**React Router.** Routes are declared in `src/routes.tsx`. Role-based guards
+wrap the manager and admin screens, so a route is refused in the router as well
+as by the API.
+
+**Tailwind CSS.** Tailwind v4, with colour and type tokens in one `@theme` block
+(see [`docs/tokens.md`](docs/tokens.md)). A unit test fails if a raw hex colour
+turns up anywhere in `src/`.
+
+**WCAG 2.2 AA.** Accessibility is tested rather than assumed. Cypress specs
+check colour contrast, focus order, visible focus rings, touch target size,
+reflow at 320px wide and text zoomed to 200%, and the app was audited against
+the AA criteria.
+
+**Agile.** The work was split into small features, each built on its own branch
+and merged through a pull request (33 of them), with conventional commit
+messages. CI type-checks, lints, checks formatting and runs the tests on every
+push and pull request.
+
+**Back end.** Express 5 and TypeORM on MySQL, with JWT authentication,
+peppered password hashing, Helmet, rate limiting, and generic error responses
+that follow OWASP guidance. The frontend only talks to the API through a
+gateway layer.
+
+## Built with
+
+- **Frontend:** Vite, React 19, TypeScript (strict), Tailwind CSS v4, React
+  Router 7, Vitest and React Testing Library, Cypress
+- **Backend:** Express 5, TypeORM, MySQL, JWT, Jest
+
+## Documentation
+
+- [`docs/tokens.md`](docs/tokens.md): the design tokens and shared loading,
+  empty and error states
+- [`backend/architecture.mmd`](backend/architecture.mmd),
+  [`backend/class-diagram.mmd`](backend/class-diagram.mmd) and
+  [`backend/erd.mmd`](backend/erd.mmd): Mermaid diagrams of the back end
+- [`backend/postman_collection.json`](backend/postman_collection.json): the API
+  as a Postman collection
+
+## Running it
 
 ## Prerequisites
 
@@ -130,7 +196,18 @@ npm run backend:dev
 npm run dev
 ```
 
-Then sign in at `http://localhost:5173/login` with a seeded account.
+Then sign in at `http://localhost:5173/login` with a seeded account. Every
+seeded account uses the password `Password123!`:
+
+| Role     | Email                        |
+| -------- | ---------------------------- |
+| Admin    | `alice.thompson@company.com` |
+| Manager  | `bob.mitchell@company.com`   |
+| Manager  | `carol.reeves@company.com`   |
+| Employee | `david.jones@company.com`    |
+
+The seed also creates `eve.knowles`, `frank.harrison` and `grace.williams` as
+employees, each with a spread of requests across the leave year.
 
 ## Design system
 
